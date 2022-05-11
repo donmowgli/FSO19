@@ -1,47 +1,8 @@
 import React from 'react'
-
-const Header = (props) => {
-  return (
-    <div>
-      <h1>{props.name}</h1>
-    </div>
-  )
-}
-
-const Content = ({parts}) => {
-  return (
-    <div>
-        {parts.map(part =>
-          <div key={part.id}>
-            <p>{part.name}, {part.exercises}</p>
-          </div>
-        )}
-    </div>
-  )
-}
-
-const Total = ({parts}) => {
-  let iValue = 0;
-  const sum = parts.reduce((s, p) => s + p.exercises, iValue)
-  return (
-    <div>
-      <p>Number of exercises {sum} </p>
-    </div>
-  )
-}
-
-const Course = ({course}) => {
-  return (
-    <div>
-      <Header name = {course.name} />
-      <Content parts = {course.parts}/>
-      <Total parts = {course.parts}/>
-  </div>
-  )
-}
+import Course from './course'
 
 const App = () => {
-  const course = {
+  const courses = {
       name: 'Half Stack application development',
       parts: [
       {
@@ -64,7 +25,7 @@ const App = () => {
 
   return (
     <div>
-      <Course course={course} />
+      <Course courses={courses} />
     </div>
   );
 }
