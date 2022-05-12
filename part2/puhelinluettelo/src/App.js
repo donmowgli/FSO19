@@ -1,20 +1,28 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import axios from 'axios'
 import checkEntries from './checkEntries'
 import newEntry from './newEntry'
 
 const App = () => {
-  const [entries, setEntries] = useState([
-    { name: 'Arto Hellas', number: '040123123' }
-  ]) 
+  const [entries, setEntries] = useState([]) 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [comparator, setComparator] = useState('')
   const [showAll, setShowAll] = useState(true)
 
+  useEffect(() => {
+    axios
+      .get('http://localhost:3001/persons')
+      .then(response => {
+        const persons = response.data
+        setEntries(persons)
+    })
+  }, [])
+
   const addEntry = (event) => {
     event.preventDefault()
     if(checkEntries(entries, newName) === true){alert(`${newName} is already on the phonebook.`); return;}
-    const newEntryObject = newEntry(newName, newNumber)
+    const newEntryObject = newEntry(newName, newNumber, entries.length)
     setEntries(entries.concat(newEntryObject))
     setNewName('')
     setNewNumber('')
@@ -70,7 +78,7 @@ const App = () => {
       </form>
       <h3>Entries</h3>
       <ul>
-        {entriesToShow.map(entry => <Entry key={entry.name} entry ={entry}/>)}
+        {entriesToShow.map(entry => <Entry key={entry.id} entry ={entry}/>)}
       </ul>
     </div>
   )
