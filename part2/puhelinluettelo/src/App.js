@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import checkEntries from './checkEntries'
+import newEntry from './newEntry'
 
 const App = () => {
   const [entries, setEntries] = useState([
@@ -16,24 +18,6 @@ const App = () => {
     setEntries(entries.concat(newEntryObject))
     setNewName('')
     setNewNumber('')
-  }
-
-  function newEntry(name, number){
-    const entryObject = {
-      name: newName,
-      number: newNumber
-    }
-    return entryObject
-  }
-
-  function checkEntries(sample, name){
-    let val = false
-    sample.forEach(entry => {
-      for(let j in entry){
-        if(entry[j] === name) {val = true}
-      }
-    })
-    return val;
   }
 
   const entriesToShow = showAll
