@@ -6,31 +6,52 @@ const App = () => {
   ]) 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
+  const [comparator, setComparator] = useState('')
+  const [showAll, setShowAll] = useState(true)
 
   const addEntry = (event) => {
     event.preventDefault()
-    if(checkEntries() === true){alert('${newName} is already on the phonebook.'); return}
-    const entryObject = {
-      name: newName,
-      number: newNumber
-    }
-    setEntries(entries.concat(entryObject))
+    if(checkEntries(entries, newName) === true){alert(`${newName} is already on the phonebook.`); return;}
+    const newEntryObject = newEntry(newName, newNumber)
+    setEntries(entries.concat(newEntryObject))
     setNewName('')
     setNewNumber('')
   }
 
-  const checkEntries = () => {
-    const names = []
-    names.concat(entries)
+  function newEntry(name, number){
+    const entryObject = {
+      name: newName,
+      number: newNumber
+    }
+    return entryObject
+  }
+
+  function checkEntries(sample, name){
+    let val = false
+    sample.forEach(entry => {
+      for(let j in entry){
+        if(entry[j] === name) {val = true}
+      }
+    })
+    return val;
+  }
+
+  const entriesToShow = showAll
+  ? entries
+  : entries.filter(entry => entry.name.includes(comparator))
+
+  const handleComparatorChange = (event) => {
+    setComparator(event.target.value)
+    if(comparator != ''){
+      setShowAll(false)
+    } else setShowAll(true)
   }
 
   const handleNameChange = (event) => {
-    console.log(event.target.value)
     setNewName(event.target.value)
   }
 
   const handleNumberChange = (event) => {
-    console.log(event.target.value)
     setNewNumber(event.target.value)
   }
 
@@ -43,6 +64,13 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <form>
+        <div>
+          <p>Filter shown with</p>
+          <input value={comparator} onChange={handleComparatorChange}></input>
+        </div>
+      </form>
+      <h3>Add a new phonebook entry</h3>
       <form onSubmit={addEntry}>
         <div>
           <p>name: </p>
@@ -56,9 +84,9 @@ const App = () => {
           <button type="submit">add</button>
         </div>
       </form>
-      <h2>Entries</h2>
+      <h3>Entries</h3>
       <ul>
-        {entries.map(entry => <Entry entry ={entry}/>)}
+        {entriesToShow.map(entry => <Entry key={entry.name} entry ={entry}/>)}
       </ul>
     </div>
   )
