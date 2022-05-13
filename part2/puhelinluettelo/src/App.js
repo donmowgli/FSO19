@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import checkEntries from './checkEntries'
 import newEntry from './newEntry'
+import entryService from './services/entries'
 
 const App = () => {
   const [entries, setEntries] = useState([]) 
@@ -11,18 +12,14 @@ const App = () => {
   const [showAll, setShowAll] = useState(true)
 
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        const persons = response.data
-        setEntries(persons)
-    })
+    setEntries(getAll)
   }, [])
 
   const addEntry = (event) => {
     event.preventDefault()
     if(checkEntries(entries, newName) === true){alert(`${newName} is already on the phonebook.`); return;}
-    const newEntryObject = newEntry(newName, newNumber, entries.length)
+    const newEntryObject = newEntry(newName, newNumber)
+    create(newEntryObject)
     setEntries(entries.concat(newEntryObject))
     setNewName('')
     setNewNumber('')
@@ -47,9 +44,18 @@ const App = () => {
     setNewNumber(event.target.value)
   }
 
+  const handleDelete = (entry) => {
+    if(window.confirm('Delete ' + entry.name + '?')){
+      remove(entry.id)
+    }
+  }
+
   const Entry = ({ entry }) => {
     return (
-      <li>{entry.name}, {entry.number}</li>
+      <div>
+        <li>{entry.name}, {entry.number}</li>
+        <button onClick={() => {handleDelete(entry)}}>delete</button>
+      </div>
     )
   }
 

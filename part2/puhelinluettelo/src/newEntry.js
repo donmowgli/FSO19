@@ -1,9 +1,7 @@
-function newEntry(name, number, current){
-    const id = current + 1
+function newEntry(name, number){
     const entryObject = {
         name: name,
-        number: number,
-        id: id
+        number: number
     }
     return entryObject
 }
