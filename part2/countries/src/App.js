@@ -1,12 +1,12 @@
 import React from 'react'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
-import Country from './country'
+import { Country, CountryList, Line, search} from './country'
 
 const App = () => {
   const [term, setTerm] = useState('')
-  const [all, setAll] = useState('')
-  const [found, setFound] = useState('')
+  const [all, setAll] = useState([])
+  const [found, setFound] = useState([])
 
   useEffect(() => {
     axios
@@ -21,23 +21,23 @@ const App = () => {
     if(found.length === 1){
       const chosen = found[0]
       return(
-        <Country.Country countryName={chosen.name.common} capital={chosen.capital} area={chosen.area} languages={chosen.languages}></Country.Country>
+        <Country countryName={chosen.name.common} capital={chosen.capital} area={chosen.area} languages={chosen.languages} flag={chosen.flags.png}></Country>
       )
     }else if (found.length < 10){
       let counList = []
-      found.forEach(item => {counList.concat(item.name.common)})
+      found.forEach(item => {counList = counList.concat(item.name.common)})
       return(
-        <Country.CountryList props={counList}></Country.CountryList>
+        <CountryList counList={counList}></CountryList>
       )
     }
     return(
-      <Country.Line props={'Too many matches, specify filter'}></Country.Line>
+      <Line line={'Too many matches, specify filter'}></Line>
     )
   }
 
   const handleTermChange = (event) => {
     setTerm(event.target.value)
-    setFound(Country.search(all, term))
+    setFound(search(all, term))
   }
 
   return (
@@ -45,7 +45,7 @@ const App = () => {
       <h1>Countries</h1>
       <form>
         <p>Find countries</p>
-        <input> value={term} onChange={handleTermChange}</input>
+        <input value={term} onChange={handleTermChange}></input>
       </form>
       <Content></Content>
     </div>
