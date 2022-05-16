@@ -9,6 +9,8 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [comparator, setComparator] = useState('')
   const [showAll, setShowAll] = useState(true)
+  const [message, setMessage] = useState('')
+  const [error, setError] = useState(false)
 
   useEffect(() => {
     updateEntries()
@@ -25,10 +27,17 @@ const App = () => {
   const updateEntry = () => {
     if(window.confirm('Name ' + newName + ' is already on the list. Want to update the new number to the existing name entry?')){
       entries.forEach(ent => {
-        if(ent.name === newName) {entryService.update(ent.id, newEntry(newName, newNumber))}
+        if(ent.name === newName) {
+          entryService
+            .update(ent.id, newEntry(newName, newNumber))
+            .catch(error => {
+              handleMessage(`Seems like ${newName} is already removed from the server.`, true)
+            })
+        }
       })
     }
     updateEntries()
+    handleMessage(`Updated ${newName} succesfully to the server.`, false)
   }
 
   const addEntry = (event) => {
@@ -39,6 +48,7 @@ const App = () => {
     updateEntries()
     setNewName('')
     setNewNumber('')
+    handleMessage(`Added ${newEntryObject.name} succesfully to the server.`, false)
   }
 
   const entriesToShow = showAll
@@ -61,10 +71,36 @@ const App = () => {
   }
 
   const handleDelete = (entry) => {
+    const name = entry.name
     if(window.confirm('Delete ' + entry.name + '?')){
       entryService.remove(entry.id)
       updateEntries()
     }
+    handleMessage(`Deleted ${name} succesfully from the server.`, false)
+  }
+
+  const handleMessage = (newMessage, errorState) => {
+    setMessage(newMessage)
+    setError(errorState)
+    setTimeout(() => {
+      setMessage(null)
+      setMessage(false)
+    }, 5000)
+  }
+
+  const Notification = () => {
+    if(message === null) {return null}
+    if(error === false){
+      return (
+        <div className="message">
+          {message}
+        </div>
+      )
+    } else return (
+      <div className="error">
+        {message}
+      </div>
+    )
   }
 
   const Entry = ({ entry }) => {
@@ -79,6 +115,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification></Notification>
       <form>
         <div>
           <p>Filter shown with</p>
