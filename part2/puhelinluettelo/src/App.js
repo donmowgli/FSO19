@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import axios from 'axios'
 import checkEntries from './checkEntries'
 import newEntry from './newEntry'
 import entryService from './services/entries'
@@ -12,15 +11,32 @@ const App = () => {
   const [showAll, setShowAll] = useState(true)
 
   useEffect(() => {
-    setEntries(getAll)
+    updateEntries()
   }, [])
+
+  const updateEntries = () => {
+    entryService
+    .getAll()
+    .then(initialEntries => {
+      setEntries(initialEntries)
+    })
+  }
+
+  const updateEntry = () => {
+    if(window.confirm('Name ' + newName + ' is already on the list. Want to update the new number to the existing name entry?')){
+      entries.forEach(ent => {
+        if(ent.name === newName) {entryService.update(ent.id, newEntry(newName, newNumber))}
+      })
+    }
+    updateEntries()
+  }
 
   const addEntry = (event) => {
     event.preventDefault()
-    if(checkEntries(entries, newName) === true){alert(`${newName} is already on the phonebook.`); return;}
+    if(checkEntries(entries, newName) === true){updateEntry(); return;}
     const newEntryObject = newEntry(newName, newNumber)
-    create(newEntryObject)
-    setEntries(entries.concat(newEntryObject))
+    entryService.create(newEntryObject)
+    updateEntries()
     setNewName('')
     setNewNumber('')
   }
@@ -46,7 +62,8 @@ const App = () => {
 
   const handleDelete = (entry) => {
     if(window.confirm('Delete ' + entry.name + '?')){
-      remove(entry.id)
+      entryService.remove(entry.id)
+      updateEntries()
     }
   }
 
