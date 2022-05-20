@@ -14,8 +14,6 @@ const descriptions : Array<string> = [
     "Super success!"
 ]
 
-type input = Array<number>
-
 const parseArgs = (args : Array<string>): Array<number> => {
     let data : Array<number> = [];
     for(let i = 2; i < args.length; i++){
@@ -25,10 +23,10 @@ const parseArgs = (args : Array<string>): Array<number> => {
     return data;
 }
 
-const exerciseCalculator = (input : Array<number>): exercise => {
+const exerciseCalculator = (input : Array<number>, goal : number): exercise => {
     let days : number = input.length;
     let trainingDays : number = calculateTrainingDays(input);
-    let target : number = 4
+    let target : number = Number(goal)
     let average : number = calculateAverage(input)
     let reached : Boolean = hasReached(trainingDays, target)
     let rating : number = getRating(trainingDays, target)
@@ -66,18 +64,16 @@ const hasReached = (total : number, target : number): Boolean => {
 
 const getRating = (total : number, target : number): number => {
     if(total < target){return 1}
-    if(total = target){return 2}
+    if(total === target){return 2}
     if(total > target){return 3}
     return 0;
 }
 
 const getDescription = (total : number, target : number): string => {
     if(total < target){return descriptions[0]}
-    if(total = target){return descriptions[1]}
+    if(total === target){return descriptions[1]}
     if(total > target){return descriptions[2]}
     return descriptions[0];
 }
 
-const args = process.argv
-const input = parseArgs(process.argv)
-console.log (exerciseCalculator(input))
+export {exerciseCalculator, parseArgs}
