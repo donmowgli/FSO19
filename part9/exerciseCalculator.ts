@@ -68,12 +68,14 @@ const getRating = (total : number, target : number): number => {
     if(total < target){return 1}
     if(total = target){return 2}
     if(total > target){return 3}
+    return 0;
 }
 
 const getDescription = (total : number, target : number): string => {
     if(total < target){return descriptions[0]}
     if(total = target){return descriptions[1]}
     if(total > target){return descriptions[2]}
+    return descriptions[0];
 }
 
 const args = process.argv

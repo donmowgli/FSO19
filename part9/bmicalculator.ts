@@ -10,6 +10,7 @@ const parseArguments = (args: Array<string>): bmi => {
             height: Number(args[3])
         }
     }
+    return {weight: Number(0), height: Number(0)}
 }
 
 const bmiCalculator = (weight: number, height: number) => {
@@ -21,3 +22,5 @@ const bmiCalculator = (weight: number, height: number) => {
 
 const {weight, height} = parseArguments(process.argv);
 bmiCalculator(weight, height)
+
+export {bmiCalculator}
