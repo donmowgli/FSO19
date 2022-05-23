@@ -1,0 +1,14 @@
+{
+  "name": "patientor-backend",
+  "version": "1.0.0",
+  "description": "Backend for Patientor application",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "Akseli Jaara",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^4.6.4"
+  }
+}
