@@ -13,9 +13,9 @@ const toNewPatientEntry = ( {name, dateOfBirth, ssn, gender, occupation}: fields
 
 const parseGender = (value : unknown): gender => {
     const stringValue : string = parseValue(value)
-    if(stringValue != 'male' && stringValue != 'female'){throw new Error('Incorrect or missing value')}
+    if(stringValue != 'male' && stringValue != 'female' && stringValue != 'other'){throw new Error('Incorrect or missing value')}
     else {
-        const enumValue : gender = gender[stringValue];
+        const enumValue = stringValue as gender;
         return enumValue;
     }
 }

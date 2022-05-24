@@ -14,8 +14,9 @@ interface patientEntry {
 }
 
 enum gender {
-    male,
-    female
+    Male = "male",
+    Female = "female",
+    Other = "other"
 }
 
 type nsPatientEntry = Omit<patientEntry, 'ssn'>;
