@@ -1,12 +1,13 @@
-import { newPatientEntry, fields, gender} from "./types"
+import { newPatientEntry, fields, gender, entry} from "./types"
 
-const toNewPatientEntry = ( {name, dateOfBirth, ssn, gender, occupation}: fields ): newPatientEntry => {
+const toNewPatientEntry = ( {name, dateOfBirth, ssn, gender, occupation, entries}: fields ): newPatientEntry => {
     const newPatient: newPatientEntry = {
         name : parseValue(name),
         dateOfBirth : parseValue(dateOfBirth),
         ssn : parseValue(ssn),
         gender : parseGender(gender),
-        occupation : parseValue(occupation)
+        occupation : parseValue(occupation),
+        entries : parseEntries(entries)
     }
     return newPatient;
 }
@@ -18,6 +19,11 @@ const parseGender = (value : unknown): gender => {
         const enumValue = stringValue as gender;
         return enumValue;
     }
+}
+
+const parseEntries = (value : unknown): Array<entry> => {
+    if(Array.isArray(value)) {throw new Error('Incorrect value, not an array');}
+    return value as Array<entry>;
 }
 
 const parseValue = (value : unknown): string => {
