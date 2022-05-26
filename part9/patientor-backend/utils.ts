@@ -22,7 +22,7 @@ const parseGender = (value : unknown): gender => {
 }
 
 const parseEntries = (value : unknown): Array<entry> => {
-    if(Array.isArray(value)) {throw new Error('Incorrect value, not an array');}
+    if(!Array.isArray(value)) {throw new Error('Incorrect value, not an array');}
     return value as Array<entry>;
 }
 
