@@ -1,6 +1,7 @@
 import express from 'express';
 import { getEntries, getEntry, addPatient } from '../services/patientService';
 import { toNewPatientEntry } from '../utils';
+import { entry } from '../types';
 
 const router = express.Router();
 
@@ -15,8 +16,9 @@ router.get('/:id', (_req, res) => {
 });
 
 router.post('/', (_req, res) => {
+    const entries : Array<entry> = [];
     try {
-        const newPatient = toNewPatientEntry(_req.body);
+        const newPatient = toNewPatientEntry(_req.body, entries);
         const addedPatient = addPatient(newPatient);
         res.json(addedPatient)
     } catch (error : unknown) {

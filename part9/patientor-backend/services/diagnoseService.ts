@@ -7,8 +7,14 @@ const getEntries = (): Array<diagnoseEntry> => {
   return diagnoses;
 };
 
+const getEntry = (code : string): diagnoseEntry | undefined => {
+  let entry;
+  diagnoses.find(diagnose => {if(diagnose.code === code) entry = diagnose})
+  return entry;
+}
+
 const addDiagnose = () => {
   return null;
 };
 
-export { getEntries, addDiagnose };
+export { getEntries, getEntry, addDiagnose };

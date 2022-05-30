@@ -4,13 +4,13 @@ import {patientEntry, nsPatientEntry, newPatientEntry} from '../types';
 import { toNewPatientEntry } from '../utils';
 
 const patients : Array<patientEntry> = patientData.map(obj => {
-    const object = toNewPatientEntry(obj) as patientEntry;
+    const object = toNewPatientEntry(obj, obj.entries) as patientEntry;
     object.id = obj.id;
     return object;
 })
 
 const nsPatients : Array<nsPatientEntry> = patientData.map(obj => {
-    const object = toNewPatientEntry(obj) as patientEntry;
+    const object = toNewPatientEntry(obj, obj.entries) as patientEntry;
     object.id = obj.id;
     return object;
 })

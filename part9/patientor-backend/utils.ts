@@ -1,6 +1,6 @@
 import { newPatientEntry, fields, gender, entry} from "./types"
 
-const toNewPatientEntry = ( {name, dateOfBirth, ssn, gender, occupation, entries}: fields ): newPatientEntry => {
+const toNewPatientEntry = ( {name, dateOfBirth, ssn, gender, occupation}: fields, entries : Array<entry> ): newPatientEntry => {
     const newPatient: newPatientEntry = {
         name : parseValue(name),
         dateOfBirth : parseValue(dateOfBirth),
