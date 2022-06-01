@@ -38,4 +38,12 @@ const addPatient = (entry : newPatientEntry): patientEntry => {
     return newPatient;
 };
 
-export { getEntries, addPatient, getEntry };
+const updatePatient = (entry : patientEntry): patientEntry | undefined => {
+    let current : patientEntry = null as unknown as patientEntry;
+    patients.map(patient => {if(patient.id === entry.id){current = patient};})
+    if(!current){throw new Error("Cannot find entry to update");}
+    patients.splice(patients.indexOf(current), 1, entry);
+    return patients.find(patient => patient.id === current.id);
+}
+
+export { getEntries, addPatient, getEntry, updatePatient };
