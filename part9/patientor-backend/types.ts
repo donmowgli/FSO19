@@ -62,7 +62,10 @@ enum healthCheckRating {
 }
 type nsPatientEntry = Omit<patientEntry, 'ssn' | 'entries'>;
 type newPatientEntry = Omit<patientEntry, 'id'>;
-type entry = baseEntry | healthCheckEntry | occupationalHealthcareEntry | hospitalEntry;
+type entry = healthCheckEntry | occupationalHealthcareEntry | hospitalEntry;
+// Define special omit for unions
+type UnionOmit<T, K extends string | number | symbol> = T extends unknown ? Omit<T, K> : never;
+type newEntry = UnionOmit<entry, 'id'>;
 type fields = { name : unknown, dateOfBirth : unknown, ssn : unknown, gender : unknown, occupation : unknown, entries? : unknown }
 
-export {diagnoseEntry, patientEntry, entry, gender, nsPatientEntry, newPatientEntry, fields}
+export {diagnoseEntry, patientEntry, entry, gender, nsPatientEntry, newPatientEntry, newEntry, fields}

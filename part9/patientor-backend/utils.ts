@@ -1,4 +1,4 @@
-import { newPatientEntry, fields, gender, entry} from "./types"
+import { newPatientEntry, newEntry, fields, gender, entry} from "./types"
 
 const toNewPatientEntry = ( {name, dateOfBirth, ssn, gender, occupation}: fields, entries : Array<entry> ): newPatientEntry => {
     const newPatient: newPatientEntry = {
@@ -10,6 +10,44 @@ const toNewPatientEntry = ( {name, dateOfBirth, ssn, gender, occupation}: fields
         entries : parseEntries(entries)
     }
     return newPatient;
+}
+
+const toNewEntry = ({...fields}): newEntry => {
+    let newEntry : newEntry = null as unknown as entry;
+    switch(fields.type) {
+        case 'healthCheck':
+            newEntry = {
+                description : fields.description,
+                date : fields.date,
+                specialist : fields.specialist,
+                diagnosisCodes : fields.diagnosisCodes,
+                type : fields.type,
+                healthCheckRating : fields.healthCheckRating
+            }
+            break;
+        case 'OccupationalHealthCare':
+            newEntry = {
+                description : fields.description,
+                date : fields.date,
+                specialist : fields.specialist,
+                diagnosisCodes : fields.diagnosisCodes,
+                type : fields.type,
+                employerName : fields.employerName,
+                sickLeave : fields.sickLeave
+            }
+            break;
+        case 'Hospital':
+            newEntry = {
+                description : fields.description,
+                date : fields.date,
+                specialist : fields.specialist,
+                diagnosisCodes : fields.diagnosisCodes,
+                type : fields.type,
+                discharge : fields.discharge
+            }
+            break;
+    }
+    return newEntry;
 }
 
 const parseGender = (value : unknown): gender => {
@@ -35,4 +73,4 @@ const isString = (text : unknown): text is string => {
     return typeof text === 'string' || text instanceof String;
 }
 
-export { toNewPatientEntry }
+export { toNewPatientEntry, toNewEntry }

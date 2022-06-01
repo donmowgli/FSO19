@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import {patients as patientData} from '../data/patients';
-import {patientEntry, nsPatientEntry, newPatientEntry, entry} from '../types';
+import {patientEntry, nsPatientEntry, newPatientEntry, newEntry, entry} from '../types';
 import { toNewPatientEntry } from '../utils';
 
 const patients : Array<patientEntry> = patientData.map(obj => {
@@ -33,14 +33,17 @@ const getEntry = (id : string): nsPatientEntry | undefined => {
 
 const addPatient = (entry : newPatientEntry): patientEntry => {
     const id : string = uuidv4();
-    const newPatient : patientEntry = {id, ...entry}
+    const newPatient : patientEntry = {id, ...entry};
     patients.push(newPatient);
     return newPatient;
 };
 
-const updatePatient = (entry : entry, id : string): patientEntry | undefined => {
+const updatePatient = (entry : newEntry, patientId : string): patientEntry | undefined => {
+    const id : string = uuidv4();
+    const newEntry : entry = {id, ...entry};
+
     let updated : patientEntry = null as unknown as patientEntry;
-    patients.map(patient => {if(patient.id === id){patient.entries = patient.entries.concat(entry); updated = patient;};})
+    patients.map(patient => {if(patient.id === patientId){patient.entries = patient.entries.concat(newEntry); updated = patient;};})
     return updated;
 }
 
