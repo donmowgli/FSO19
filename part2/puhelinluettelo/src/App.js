@@ -31,7 +31,8 @@ const App = () => {
           entryService
             .update(ent.id, newEntry(newName, newNumber))
             .catch(error => {
-              handleMessage(`Seems like ${newName} is already removed from the server.`, true)
+              handleMessage(`${error}`, true);
+              return;
             })
         }
       })
@@ -45,6 +46,11 @@ const App = () => {
     if(checkEntries(entries, newName) === true){updateEntry(); return;}
     const newEntryObject = newEntry(newName, newNumber)
     entryService.create(newEntryObject)
+    .catch(error => {
+      handleMessage(`${error}`, true);
+      return;
+    })
+    setEntries(entries.concat(newEntryObject))
     updateEntries()
     setNewName('')
     setNewNumber('')
@@ -57,7 +63,7 @@ const App = () => {
 
   const handleComparatorChange = (event) => {
     setComparator(event.target.value)
-    if(comparator != ''){
+    if(comparator !== ''){
       setShowAll(false)
     } else setShowAll(true)
   }
@@ -74,9 +80,14 @@ const App = () => {
     const name = entry.name
     if(window.confirm('Delete ' + entry.name + '?')){
       entryService.remove(entry.id)
+      .catch(error => {
+        handleMessage(`Deleting of ${name} failed. Possibly already deleted from the server.`, true);
+        console.log(error.message);
+        return;
+      })
+      handleMessage(`Deleted ${name} succesfully from the server.`, false)
       updateEntries()
     }
-    handleMessage(`Deleted ${name} succesfully from the server.`, false)
   }
 
   const handleMessage = (newMessage, errorState) => {
@@ -106,7 +117,7 @@ const App = () => {
   const Entry = ({ entry }) => {
     return (
       <div>
-        <li>{entry.name}, {entry.number}</li>
+        <li key={entry.name}>{entry.name}, {entry.number}</li>
         <button onClick={() => {handleDelete(entry)}}>delete</button>
       </div>
     )

@@ -1,5 +1,5 @@
 import axios from 'axios'
-const baseUrl = '/api/persons'
+const baseUrl = 'http://localhost:3001/api/persons'
 
 const getAll = async () => {
     const request = axios.get(baseUrl)
@@ -9,20 +9,31 @@ const getAll = async () => {
 
 const create = async (newObject) => {
     const request = axios.post(baseUrl, newObject)
+        .catch(error => {
+            throw new Error(`${error.response.status}: ${error.response.data.error}`)
+        })
     const response = await request
     return response.data
 }
 
 const update = async (id, newObject) => {
     const request = axios.put(`${baseUrl}/${id}`, newObject)
+        .catch(error => {
+            throw new Error(`${error.response.status}: ${error.response.data.error}`)
+        })
     const response = await request
     return response.data
 }
 
 const remove = async (id) => {
     const request = axios.delete(`${baseUrl}/${id}`)
+        .catch(error => {
+            throw new Error(`${error.response.status}: ${error.response.data.error}`)
+        })
     const response = await request
     return response.data
 }
 
-export default { getAll, create, update, remove }
+const entryService = { getAll, create, update, remove }
+
+export default entryService;
