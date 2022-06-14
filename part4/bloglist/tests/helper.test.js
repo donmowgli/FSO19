@@ -39,8 +39,58 @@ describe('favourite blog', () => {
         expect(result).toBe(listWithOneBlog[0]);
     })
 
-    test('when provided list is empty', () => {
+    test('when provided with full list of test data', () => {
         const result = listHelper.favouriteBlog(blogs);
         expect(result).toBe(blogs[2]);
+    })
+})
+
+describe('Most blogs', () => {
+
+    const blogger = (author, blogs) => {
+        return({
+            author : author,
+            blogs : blogs
+        })
+    }
+
+    test('when provided list is empty', () => {
+        const result = listHelper.mostBlogs(emptyList);
+        expect(result).toBe(null);
+    })
+
+    test('when list has only one blog equals the only blog', () => {
+        const result = listHelper.mostBlogs(listWithOneBlog);
+        expect(result).toBe(blogger(listWithOneBlog[0].author, 1));
+    })
+
+    test('when provided with full list of test data', () => {
+        const result = listHelper.mostBlogs(blogs);
+        expect(result).toBe(blogger(blogs[3].author, 3));
+    })
+})
+
+describe('Most likes', () => {
+
+    const blogger = (author, likes) => {
+        return({
+            author : author,
+            likes : likes
+        })
+    }
+
+    test('when provided list is empty', () => {
+        const result = listHelper.mostLikes(emptyList);
+        expect(result).toBe(null);
+    })
+
+    test('when list has only one blog equals the only blog', () => {
+        const result = listHelper.mostLikes(listWithOneBlog);
+        expect(result).toBe(blogger(listWithOneBlog[0].author, listWithOneBlog[0].likes));
+    })
+
+    test('when provided with full list of test data', () => {
+        const result = listHelper.mostLikes(blogs);
+        expect(result).toBe(blogger(blogs[1].author, 17));
     })
 })
