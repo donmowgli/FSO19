@@ -1,4 +1,4 @@
-import { toNewBlog } from "../utils.js"
+import { toNewBlog } from "../utils/utils.js"
 import { Blog } from ".././models/Blog.js"
 
 const blogsData =  await getBlogsFromDb();
