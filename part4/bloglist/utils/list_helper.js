@@ -1,3 +1,5 @@
+const _ = require('lodash')
+
 const dummy = (blogs) => {
     return 1;
 }
@@ -24,21 +26,15 @@ const favouriteBlog = (blogs) => {
 const mostBlogs = (blogs) => {
     if(blogs.length < 1){return null}
 
-    const blogger = (author, blogs) => {
-        return({
-            author : author,
-            blogs : blogs
-        })
-    }
+    let bloggers = [];
 
-    const bloggers = blogs.map(blog => {
-        bloggers.forEach(blogger => {
-            if(blog.author === blogger.author){blogger.blogs += 1; return;}
-            return blogger(blog.author, 1);
-        });
-    });
+    blogs.forEach(blog => {
+        let blogger = _.find(bloggers, { author : blog.author })
+        if(blogger){ blogger.blogs += 1 }
+        else{ bloggers.push( { author : blog.author, blogs : 1 } ) }
+    })
 
-    console.log(bloggers)
+    console.log(... bloggers);
 
     let most = bloggers[0];
     bloggers.forEach(blogger => {
@@ -52,17 +48,13 @@ const mostBlogs = (blogs) => {
 
 const mostLikes = (blogs) => {
     if(blogs.length < 1){return null}
-    const blogger = (author, likes) => {
-        return({
-            author : author,
-            likes : likes
-        })
-    }
 
     let bloggers = [];
-    bloggers = blogs.map(blog => {
-        bloggers.forEach(blogger => {if(blogger.author === blog.author) blogger.likes += blog.likes; return;})
-        return(blogger(blog.author, blog.likes));
+
+    blogs.forEach(blog => {
+        let blogger = _.find(bloggers, { author : blog.author })
+        if(blogger){ blogger.likes += blog.likes }
+        else{ bloggers.push( { author : blog.author, likes : blog.likes } ) }
     })
 
     let most = bloggers[0];
